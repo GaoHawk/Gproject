@@ -38,47 +38,31 @@
           <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
             <el-tab-pane label="用户管理" name="first">
 
-               <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
-               <el-col :span="12" >
-                 <el-form-item label="角色id:" class="custom-bottom">
-                   <el-input v-model="formLabelAlign.name" :disabled="true" icon="plus"
-                    :on-icon-click="handleIconClick"></el-input>
-                 </el-form-item>
-                 <el-form-item label="活动区域" class="custom-bottom">
-                   <el-input v-model="formLabelAlign.region"></el-input>
-                 </el-form-item>
-                 <el-form-item label="活动形式" class="custom-bottom">
-                   <el-input v-model="formLabelAlign.type"></el-input>
-                 </el-form-item>
-                 </el-col>
-                 <el-col :span="11" :offset="1">
-                    <el-form-item label="活动形式" class="custom-bottom">
-                      <el-input v-model="formLabelAlign.type"></el-input>
-                    </el-form-item>
-                 </el-col>
-               </el-form>
-
+            <userComponent></userComponent>
 
             </el-tab-pane>
-            <el-tab-pane label="配置管理" name="second">配置管理</el-tab-pane>
-            <el-tab-pane label="角色管理" name="third">角色管理</el-tab-pane>
+            <el-tab-pane label="角色管理" name="second">
+            <character></character>
+            </el-tab-pane>
+            <el-tab-pane label="阵容" name="third">角色管理</el-tab-pane>
             <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
           </el-tabs>
       </el-col>
     </el-row>
-
-
-
-
+    <secondCom ></secondCom>
   </div>
 </template>
 
 <script>
+import userComponent from './components/user.vue'
+import secondCom from './components/Dialog.vue'
+import character from './components/character.vue'
+import Table from './components/table.vue'
 export default {
   name: 'app',
   data(){
     return{
-        activeName2:'first',
+        activeName2:'second',
         labelPosition:'left',
         formLabelAlign: {
            name: '',
@@ -87,9 +71,12 @@ export default {
          },
          right:{
              mariginLeft:"20px"
-         }
+         },
+         dialogVisible: false
       }
   },
+  components:{userComponent,secondCom,character,Table},
+
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -103,6 +90,7 @@ export default {
     handleIconClick(ev){
        console.log(ev)
     }
+
   }
 }
 </script>
@@ -117,6 +105,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  margin:0 28px;
   margin-top: 60px;
 }
 .tabs{

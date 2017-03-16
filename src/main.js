@@ -4,14 +4,19 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
+import store from './vuex/store.js'
+import { sync } from 'vuex-router-sync'
+
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
+sync(store,router);
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store:store,
   template: '<App/>',
   components: { App }
 })
