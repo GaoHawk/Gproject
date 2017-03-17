@@ -6,8 +6,9 @@ import router from './router'
 import ElementUI from 'element-ui'
 import store from './vuex/store.js'
 import { sync } from 'vuex-router-sync'
+import Axios from 'axios'
 
-
+Vue.prototype.$http = Axios
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 sync(store,router);

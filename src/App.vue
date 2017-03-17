@@ -39,13 +39,29 @@
             <el-tab-pane label="用户管理" name="first">
 
             <userComponent></userComponent>
-
             </el-tab-pane>
             <el-tab-pane label="角色管理" name="second">
             <character></character>
             </el-tab-pane>
-            <el-tab-pane label="阵容" name="third">角色管理</el-tab-pane>
-            <el-tab-pane label="定时任务补偿" name="fourth">定时任务补偿</el-tab-pane>
+            <el-tab-pane label="阵容" name="third">
+              <div class="custom-select">
+                  <el-select v-model="value"  size="mini" @change="selectChange">
+                    <el-option
+                      v-for="item in options"
+                      :key="item.id"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+              </div>
+              <TTable></TTable>
+            </el-tab-pane>
+            <el-tab-pane label="武将" name="fourth">
+               <div class="custom-style">
+                 <el-button size="small">赠送武将</el-button>
+               </div>
+               <TTable></TTable>
+            </el-tab-pane>
           </el-tabs>
       </el-col>
     </el-row>
@@ -57,12 +73,22 @@
 import userComponent from './components/user.vue'
 import secondCom from './components/Dialog.vue'
 import character from './components/character.vue'
-import Table from './components/table.vue'
+import TTable from './components/table.vue'
+
 export default {
+  beforeCreate(){
+      this.$http.get("api/table1").then(response => {
+            console.log(response)
+            console.log(this._data)
+            this.$store.commit('SET_TABLE',response.data.data)
+      }, response =>{
+         console.log(response)
+      })
+  },
   name: 'app',
   data(){
     return{
-        activeName2:'second',
+        activeName2:'third',
         labelPosition:'left',
         formLabelAlign: {
            name: '',
@@ -72,10 +98,24 @@ export default {
          right:{
              mariginLeft:"20px"
          },
-         dialogVisible: false
+         dialogVisible: false,
+         options:[{
+            id:1,
+            value:'选项1',
+            label:'PVE阵容'
+         },{
+            id:2,
+            value:'选项2',
+            label:'PVP攻击阵容'
+         },{
+             id:3,
+             value:'选项3',
+             label:'PVE防御阵容'
+         }],
+         value:'选项1'
       }
   },
-  components:{userComponent,secondCom,character,Table},
+  components:{userComponent,secondCom,character,TTable},
 
   methods: {
     handleOpen(key, keyPath) {
@@ -85,10 +125,29 @@ export default {
       console.log(key, keyPath);
     },
     handleClick(tab,event){
-       console.log(tab,event);
+       // console.log(tab,event);
+       if(tab.label == '武将'){
+         console.log(tab)
+         this.$http.get("api/table2").then(response => {
+               this.$store.commit('SET_TABLE',response.data.data)
+         }, response =>{
+            console.log(response)
+         })
+       }
     },
     handleIconClick(ev){
        console.log(ev)
+    },
+    selectChange(val){
+       if(val == '选项2'){
+          this.$http.get("api/table2").then(response => {
+                this.$store.commit('SET_TABLE',response.data.data)
+          }, response =>{
+             console.log(response)
+          })
+       }else{
+
+       }
     }
 
   }
@@ -96,6 +155,13 @@ export default {
 </script>
 
 <style>
+.custom-style{
+    text-align: right;
+}
+.custom-select{
+  text-align: right;
+  margin-bottom: 3px;
+}
 .custom-bottom{
    margin-bottom: 6px;
 }

@@ -3,6 +3,7 @@
 <el-dialog :title="title" v-model="dialogVisible" size="tiny"
  :show-close=false
  :close-on-press-escape=false
+ :close-on-click-modal =false
  >
   <span>这是一段信息</span>
   <span slot="footer" class="dialog-footer">
