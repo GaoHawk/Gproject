@@ -8,6 +8,11 @@ import store from './vuex/store.js'
 import { sync } from 'vuex-router-sync'
 import Axios from 'axios'
 
+Vue.filter("getStr",function(value){
+    if(!value){return ''}
+      value = "1-" + value;
+    return value;
+})
 Vue.prototype.$http = Axios
 Vue.use(ElementUI)
 Vue.config.productionTip = false
