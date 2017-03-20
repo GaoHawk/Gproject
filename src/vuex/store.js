@@ -2,7 +2,7 @@
 * @Author: Administrator
 * @Date:   2017-03-16 15:07:33
 * @Last Modified by:   Administrator
-* @Last Modified time: 2017-03-17 16:14:24
+* @Last Modified time: 2017-03-20 17:53:44
 */
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -19,7 +19,10 @@ export default new Vuex.Store({
       title:'',
       path:'',
       dialogVisible:false,
-      currentData:[]
+      currentData:[],
+      userData:[],
+      userList:[],
+      userId:''
    },
    actions: {
      setNewTitle({commit},msg){
@@ -39,6 +42,21 @@ export default new Vuex.Store({
      },
      setTableData({commit},arr){
          commit('SET_TABLE',arr)
+     },
+     setUserTable({commit},arr){
+        commit('SET_USER',arr)
+     },
+     setUserId({commit},userId){
+        commit('SET_UID',userId)
+     },
+     setUserList({commit},arr){
+         commit('SET_LIST',arr)
+     },
+     deleteUserByID({commit},uid){
+         commit('DELETE_USER',uid)
+     },
+     deleteUserData({commit}){
+         commit('DELETE_USERDATA')
      }
    },
    mutations:{
@@ -64,7 +82,28 @@ export default new Vuex.Store({
      },
      SET_TABLE(state,dataArr){
          state.currentData = dataArr
-         console.log(state.currentData);
+     },
+     SET_USER(state,dataArr){
+        state.userData = dataArr
+        console.log(state.userData)
+     },
+     DELETE_USERDATA(state){
+         for(let key in state.userData){
+             state.userData[key] = ''
+         }
+         console.log(state.userData);
+     },
+     SET_LIST(state,dataArr){
+        state.userList = dataArr
+     },
+     DELETE_USER(state,uid){
+        state.userList = state.userList.filter(function(item){
+            return item.cId !== uid
+        })
+         console.log(state.userList);
+     },
+     SET_UID(state,userId){
+        state.userId = userId
      }
    },
     strict:debug

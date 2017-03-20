@@ -8,7 +8,7 @@
           router
           unique-opened>
           <el-submenu index="1" >
-            <template slot="title"><i class="el-icon-message"></i>导航一</template>
+            <template slot="title"><i class="el-icon-message"></i>用户管理</template>
             <el-menu-item-group>
               <template slot="title">账号搜索</template>
               <div class="custom-radio">
@@ -48,7 +48,7 @@
                   <!-- <h3 v-show="nodata">没有找到数据</h3> -->
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item index="2"><i class="el-icon-menu"></i>导航二</el-menu-item>
+          <el-menu-item index="2"><i class="el-icon-menu"></i>运营管理</el-menu-item>
           <el-menu-item index="3"><i class="el-icon-setting"></i>导航三</el-menu-item>
           <el-submenu index="4">
             <template slot="title"><i class="el-icon-message"></i>导航四</template>
@@ -100,7 +100,7 @@ import userComponent from './components/user.vue'
 import secondCom from './components/Dialog.vue'
 import character from './components/character.vue'
 import TTable from './components/table.vue'
-
+import { mapState, mapActions } from 'vuex'
 
 export default {
   beforeCreate(){
@@ -118,10 +118,14 @@ export default {
       // })
   },
   name: 'app',
+  computed:{
+     ...mapState({
+          Datajson:state => state.userList
+     })
+  },
   data(){
     return{
-        Datajson:[],
-        activeName2:'third',
+        activeName2:'first',
         labelPosition:'left',
         formLabelAlign: {
            name: '',
@@ -185,7 +189,8 @@ export default {
       }).then(response => {
             console.log(response)
             console.log(this._data)
-            this.Datajson= response.data
+            this.$store.commit('SET_LIST',response.data);
+            // this.Datajson= response.data
             // this.$store.commit('SET_TABLE',response.data.data)
       }, response =>{
          console.log(response)
@@ -193,6 +198,7 @@ export default {
     },
     getUserData(index,row){
        console.log(index,row)
+       this.$store.commit('SET_UID',row.cId);
        this.$http.get("http://localhost:8081/character/getUserInfo",   {
          params: {
                id: row.cId
@@ -200,8 +206,8 @@ export default {
        }).then(response => {
              console.log(response)
              console.log(this._data)
-             // this.Datajson= response.data
-             // this.$store.commit('SET_TABLE',response.data.data)
+             response.data.type = "占位";
+             this.$store.commit('SET_USER',response.data)
        }, response =>{
           console.log(response)
        })
