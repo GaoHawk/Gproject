@@ -88,16 +88,13 @@ import Dialog from './Dialog.vue'
     name: 'app',
     data(){
       return{
-          activeName2:'first',
           labelPosition:'left',
           formLabelAlign: {
              name: '',
              region: '',
              type: ''
            },
-           right:{
-               mariginLeft:"20px"
-           },
+
            dialogFormVisible: false,
         }
     },

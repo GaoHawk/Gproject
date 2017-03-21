@@ -4,7 +4,7 @@
     <el-row class="tac" :gutter="10">
       <el-col :span="4">
         <h5>带 icon</h5>
-        <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+        <el-menu  class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
           router
           unique-opened>
           <el-submenu index="1" >
@@ -48,7 +48,14 @@
                   <!-- <h3 v-show="nodata">没有找到数据</h3> -->
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item index="2"><i class="el-icon-menu"></i>运营管理</el-menu-item>
+          <el-submenu index="2">
+            <template slot="title"><i class="el-icon-edit"></i>运营管理</template>
+
+              <!-- <template slot="title">分组一</template> -->
+              <el-menu-item index="2-1"></el-menu-item>
+              <el-menu-item index="2-2"></el-menu-item>
+
+          </el-submenu>
           <el-menu-item index="3"><i class="el-icon-setting"></i>导航三</el-menu-item>
           <el-submenu index="4">
             <template slot="title"><i class="el-icon-message"></i>导航四</template>
@@ -61,45 +68,23 @@
         </el-menu>
       </el-col>
       <el-col :span="20">
-          <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
-            <el-tab-pane label="用户管理" name="first">
 
-            <userComponent></userComponent>
-            </el-tab-pane>
-            <el-tab-pane label="角色管理" name="second">
-            <character></character>
-            </el-tab-pane>
-            <el-tab-pane label="阵容" name="third">
-              <div class="custom-select">
-                  <el-select v-model="value"  size="mini" @change="selectChange">
-                    <el-option
-                      v-for="item in options"
-                      :key="item.id"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-select>
-              </div>
-              <TTable></TTable>
-            </el-tab-pane>
-            <el-tab-pane label="武将" name="fourth">
-               <div class="custom-style">
-                 <el-button size="small">赠送武将</el-button>
-               </div>
-               <TTable></TTable>
-            </el-tab-pane>
-          </el-tabs>
+          <First v-show="tabId == 1"></First>
+          <!-- 运营管理表格 -->
+          <Second v-show="tabId == 2"></Second>
       </el-col>
+
+
     </el-row>
     <secondCom ></secondCom>
   </div>
 </template>
 
 <script>
-import userComponent from './components/user.vue'
+
 import secondCom from './components/Dialog.vue'
-import character from './components/character.vue'
-import TTable from './components/table.vue'
+import First from './components/firstTab.vue'
+import Second from './components/secondTab.vue'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -116,64 +101,33 @@ export default {
       // }, response =>{
       //    console.log(response)
       // })
+
   },
   name: 'app',
   computed:{
      ...mapState({
-          Datajson:state => state.userList
+          Datajson:state => state.userList,
+          tabId:state => state.tabId
      })
   },
   data(){
     return{
-        activeName2:'first',
-        labelPosition:'left',
-        formLabelAlign: {
-           name: '',
-           region: '',
-           type: ''
-         },
-         right:{
-             mariginLeft:"20px"
-         },
-         dialogVisible: false,
-         options:[{
-            id:1,
-            value:'选项1',
-            label:'PVE阵容'
-         },{
-            id:2,
-            value:'选项2',
-            label:'PVP攻击阵容'
-         },{
-             id:3,
-             value:'选项3',
-             label:'PVE防御阵容'
-         }],
-         value:'选项1',
+
+         // dialogVisible: false,
          radio:'1',
          input2:'',
          nodata:false
       }
   },
-  components:{userComponent,secondCom,character,TTable},
+  components:{First,Second,secondCom},
 
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
+      this.$store.commit('SET_TABID',key);
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
-    },
-    handleClick(tab,event){
-       // console.log(tab,event);
-       if(tab.label == '武将'){
-         console.log(tab)
-         this.$http.get("api/table2").then(response => {
-               this.$store.commit('SET_TABLE',response.data.data)
-         }, response =>{
-            console.log(response)
-         })
-       }
     },
     handleIconClick(ev){
        console.log(ev)
@@ -211,17 +165,6 @@ export default {
        }, response =>{
           console.log(response)
        })
-    },
-    selectChange(val){
-       if(val == '选项2'){
-          this.$http.get("api/table2").then(response => {
-                this.$store.commit('SET_TABLE',response.data.data)
-          }, response =>{
-             console.log(response)
-          })
-       }else{
-
-       }
     }
 
   }
@@ -232,13 +175,6 @@ export default {
 .custom-radio{
     text-align: left;
     padding-left: 5px;
-}
-.custom-style{
-    text-align: right;
-}
-.custom-select{
-  text-align: right;
-  margin-bottom: 3px;
 }
 .custom-bottom{
    margin-bottom: 6px;

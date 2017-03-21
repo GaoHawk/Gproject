@@ -2,7 +2,7 @@
 * @Author: Administrator
 * @Date:   2017-03-16 15:07:33
 * @Last Modified by:   Administrator
-* @Last Modified time: 2017-03-20 17:53:44
+* @Last Modified time: 2017-03-21 11:13:28
 */
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -22,7 +22,8 @@ export default new Vuex.Store({
       currentData:[],
       userData:[],
       userList:[],
-      userId:''
+      userId:'',
+      tabId:'1'
    },
    actions: {
      setNewTitle({commit},msg){
@@ -57,6 +58,9 @@ export default new Vuex.Store({
      },
      deleteUserData({commit}){
          commit('DELETE_USERDATA')
+     },
+     setTabId({commit},tId){
+         commit('SET_TABID',tId)
      }
    },
    mutations:{
@@ -104,6 +108,10 @@ export default new Vuex.Store({
      },
      SET_UID(state,userId){
         state.userId = userId
+     },
+     SET_TABID(state,tId){
+        state.tabId = tId
+        console.log(state.tabId)
      }
    },
     strict:debug

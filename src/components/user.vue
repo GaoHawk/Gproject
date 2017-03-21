@@ -61,12 +61,9 @@ import { mapState } from 'vuex'
     },
     data(){
       return{
-          activeName2:'first',
+
           labelPosition:'left',
 
-           right:{
-               mariginLeft:"20px"
-           },
            dialogFormVisible: false,
         }
     },
