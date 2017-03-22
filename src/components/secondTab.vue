@@ -74,28 +74,28 @@
       },
       handleClick(tab,event){
          // console.log(tab,event);
-         if(tab.label == '武将'){
-           console.log(tab)
-           this.$http.get("api/table2").then(response => {
-                 this.$store.commit('SET_TABLE',response.data.data)
-           }, response =>{
-              console.log(response)
-           })
-         }
+         // if(tab.label == '武将'){
+         //   console.log(tab)
+         //   this.$http.get("api/table2").then(response => {
+         //         this.$store.commit('SET_TABLE',response.data.data)
+         //   }, response =>{
+         //      console.log(response)
+         //   })
+         // }
       },
       handleIconClick(ev){
          console.log(ev)
       },
       selectChange(val){
-         if(val == '选项2'){
-            this.$http.get("api/table2").then(response => {
-                  this.$store.commit('SET_TABLE',response.data.data)
-            }, response =>{
-               console.log(response)
-            })
-         }else{
+         // if(val == '选项2'){
+         //    this.$http.get("api/table2").then(response => {
+         //          this.$store.commit('SET_TABLE',response.data.data)
+         //    }, response =>{
+         //       console.log(response)
+         //    })
+         // }else{
 
-         }
+         // }
       }
 
     }

@@ -2,7 +2,7 @@
 * @Author: Administrator
 * @Date:   2017-03-16 15:07:33
 * @Last Modified by:   Administrator
-* @Last Modified time: 2017-03-21 11:13:28
+* @Last Modified time: 2017-03-22 15:31:48
 */
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -19,6 +19,8 @@ export default new Vuex.Store({
       title:'',
       path:'',
       dialogVisible:false,
+      dialogVisible1:false,
+      response:'',
       currentData:[],
       userData:[],
       userList:[],
@@ -40,6 +42,15 @@ export default new Vuex.Store({
      },
      open_dialog({commit}){
          commit('OPEN_DIALOG',dialogVisible)
+     },
+     close_dialog({commit}){
+        commit('CLOSE-DIALOG1',dialogVisible1)
+     },
+     open_dialog1({commit}){
+        commit('OPEN_DIALOG1',dialogVisible1)
+     },
+     setResponse({commit},msg){
+        commit('SET_RESPONSE',msg)
      },
      setTableData({commit},arr){
          commit('SET_TABLE',arr)
@@ -81,8 +92,17 @@ export default new Vuex.Store({
      CLOSE_DIALOG(state,dialogVisible){
          state.dialogVisible = false;
      },
+     CLOSE_DIALOG1(state,dialogVisible){
+         state.dialogVisible1 = false;
+     },
      OPEN_DIALOG(state,dialogVisible){
          state.dialogVisible = true;
+     },
+     OPEN_DIALOG1(state,dialogVisible){
+         state.dialogVisible1 = true;
+     },
+     SET_RESPONSE(state,msg){
+         state.response = msg;
      },
      SET_TABLE(state,dataArr){
          state.currentData = dataArr

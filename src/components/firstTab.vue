@@ -7,8 +7,9 @@
   <el-tab-pane label="角色管理" name="second">
   <character></character>
   </el-tab-pane>
-  <el-tab-pane label="阵容" name="third">
-    <div class="custom-select">
+  <el-tab-pane label="精灵装备" name="third">
+    精灵装备
+<!--     <div class="custom-select">
         <el-select v-model="value"  size="mini" @change="selectChange">
           <el-option
             v-for="item in options"
@@ -18,13 +19,14 @@
           </el-option>
         </el-select>
     </div>
-    <TTable></TTable>
+    <TTable></TTable> -->
   </el-tab-pane>
-  <el-tab-pane label="武将" name="fourth">
-     <div class="custom-style">
+  <el-tab-pane label="材料道具" name="fourth">
+  材料道具
+<!--      <div class="custom-style">
        <el-button size="small">赠送武将</el-button>
      </div>
-     <TTable></TTable>
+     <TTable></TTable> -->
   </el-tab-pane>
 </el-tabs>
 
@@ -40,6 +42,7 @@
 </style>
 <script>
   import userComponent from './user.vue'
+
   import character from './character.vue'
   import TTable from './table.vue'
   import { mapState, mapActions } from 'vuex'
@@ -86,28 +89,28 @@
       },
       handleClick(tab,event){
          // console.log(tab,event);
-         if(tab.label == '武将'){
-           console.log(tab)
-           this.$http.get("api/table2").then(response => {
-                 this.$store.commit('SET_TABLE',response.data.data)
-           }, response =>{
-              console.log(response)
-           })
-         }
+         // if(tab.label == '武将'){
+         //   console.log(tab)
+         //   this.$http.get("api/table2").then(response => {
+         //         this.$store.commit('SET_TABLE',response.data.data)
+         //   }, response =>{
+         //      console.log(response)
+         //   })
+         // }
       },
       handleIconClick(ev){
          console.log(ev)
       },
       selectChange(val){
-         if(val == '选项2'){
-            this.$http.get("api/table2").then(response => {
-                  this.$store.commit('SET_TABLE',response.data.data)
-            }, response =>{
-               console.log(response)
-            })
-         }else{
+         // if(val == '选项2'){
+         //    this.$http.get("api/table2").then(response => {
+         //          this.$store.commit('SET_TABLE',response.data.data)
+         //    }, response =>{
+         //       console.log(response)
+         //    })
+         // }else{
 
-         }
+         // }
       }
 
     }

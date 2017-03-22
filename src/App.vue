@@ -3,7 +3,7 @@
 
     <el-row class="tac" :gutter="10">
       <el-col :span="4">
-        <h5>带 icon</h5>
+        <h5></h5>
         <el-menu  class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
           router
           unique-opened>
@@ -13,7 +13,7 @@
               <template slot="title">账号搜索</template>
               <div class="custom-radio">
                 <el-radio class="radio" v-model="radio" label="1">账号UID</el-radio>
-                 <el-radio class="radio" v-model="radio" label="2">玩家ID</el-radio>
+                 <el-radio class="radio" v-model="radio" label="2">玩家昵称</el-radio>
               </div>
 
                <el-input
@@ -77,12 +77,14 @@
 
     </el-row>
     <secondCom ></secondCom>
+    <thirdCom></thirdCom>
   </div>
 </template>
 
 <script>
 
 import secondCom from './components/Dialog.vue'
+import thirdCom from './components/EmailDialog.vue'
 import First from './components/firstTab.vue'
 import Second from './components/secondTab.vue'
 import { mapState, mapActions } from 'vuex'
@@ -119,7 +121,7 @@ export default {
          nodata:false
       }
   },
-  components:{First,Second,secondCom},
+  components:{First,Second,secondCom,thirdCom},
 
   methods: {
     handleOpen(key, keyPath) {
@@ -135,7 +137,7 @@ export default {
     handleIconClick2(ev){
       console.log(this.radio)
       console.log(this.input2)
-      this.$http.get("http://localhost:8081/character/findCharacters",   {
+      this.$http.get("/character/findCharacters",   {
         params: {
               keyType: this.radio-1,
               keyValue:this.input2
@@ -153,7 +155,7 @@ export default {
     getUserData(index,row){
        console.log(index,row)
        this.$store.commit('SET_UID',row.cId);
-       this.$http.get("http://localhost:8081/character/getUserInfo",   {
+       this.$http.get("/character/getUserInfo",   {
          params: {
                id: row.cId
              }

@@ -23,7 +23,6 @@
     <el-button  @click="sendEmail('emailForm')" size="small">发送</el-button>
   </el-form-item>
   </el-col>
-
 </el-form>
 </template>
 <style>
@@ -35,7 +34,7 @@
   }
 </style>
 <script>
-import Dialog from './Dialog.vue'
+import EDialog from './EmailDialog.vue'
 import { mapState } from 'vuex'
   export default {
     name: 'app',
@@ -125,7 +124,7 @@ import { mapState } from 'vuex'
         }
     },
     components:{
-
+        EDialog
     },
     methods: {
       handleOpen(key, keyPath) {
@@ -142,8 +141,36 @@ import { mapState } from 'vuex'
       },
       // 对话框控制方法
       sendEmail:function(formName){
-        console.log(formName)
          console.log(this.$refs[formName])
+         console.log(this.emailForm)
+         this.$refs[formName].validate((valid) => {
+            if(valid) {
+                  this.$http.get("/operate/sendMail",   {
+                       params:{
+                       characters:this.emailForm.characters,
+                       g_cash:this.emailForm.g_cash,
+                       m_cash:this.emailForm.m_cash,
+                       title:this.emailForm.title,
+                       content:this.emailForm.content,
+                       items:this.emailForm.items
+                       }
+                  }).then(response => {
+                        console.log(response)
+
+                        // this.$store.commit('SET_USER',response.data)
+                        this.$store.commit('SET_RESPONSE','邮件发送成功')
+                        this.$store.commit('OPEN_DIALOG1');
+                  }, response =>{
+                     this.$store.commit('OPEN_DIALOG1');
+                     this.$store.commit('SET_RESPONSE','提交失败')
+                     console.log(response)
+                  })
+
+            }else{
+               console.log('error submit!!');
+               return false;
+            }
+         })
       }
     }
   }

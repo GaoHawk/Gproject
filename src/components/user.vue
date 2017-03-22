@@ -49,7 +49,6 @@
   }
 </style>
 <script>
-import Dialog from './Dialog.vue'
 import { mapState } from 'vuex'
   export default {
     name: 'app',

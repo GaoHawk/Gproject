@@ -109,7 +109,7 @@
 
                          // 提交新密码
                          if(this.UID){
-                           this.$http.get("http://localhost:8081/character/updatePWD",   {
+                           this.$http.get("/character/updatePWD",   {
                                 params:{
                                   uid:this.UID,
                                   newpwd:pwd
@@ -127,7 +127,7 @@
                          }
                      }else if(formName === 'form2'){
                         if(this.UID){
-                          this.$http.get("http://localhost:8081/character/delMember",   {
+                          this.$http.get("/character/delMember",   {
                                 params:{
                                    uid:this.UID
                                 }
