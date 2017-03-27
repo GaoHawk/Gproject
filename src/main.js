@@ -13,6 +13,8 @@ Vue.filter("getStr",function(value){
       value = "1-" + value;
     return value;
 })
+
+
 Vue.prototype.$http = Axios
 Vue.use(ElementUI)
 Vue.config.productionTip = false
