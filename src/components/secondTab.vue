@@ -10,7 +10,10 @@
   <el-tab-pane label="客户端更新通知" name="third">
     客户端更新通知
   </el-tab-pane>
-  <el-tab-pane label="礼品码" name="fourth">
+  <el-tab-pane label="跑马灯" name="fourth">  
+    <PaoMa></PaoMa>
+  </el-tab-pane>
+  <el-tab-pane label="礼品码" name="fifth">
       礼品码
   </el-tab-pane>
 </el-tabs>
@@ -30,6 +33,7 @@
   import character from './character.vue'
   import TTable from './table.vue'
   import EEmail from './email.vue'
+  import PaoMa from './sendAllmsg.vue'
   import { mapState, mapActions } from 'vuex'
 
   export default {
@@ -63,7 +67,7 @@
            value:'选项1'
         }
     },
-    components:{userComponent,character,TTable,EEmail},
+    components:{userComponent,character,TTable,EEmail,PaoMa},
 
     methods: {
       handleOpen(key, keyPath) {
