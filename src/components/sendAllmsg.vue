@@ -1,20 +1,20 @@
 <template>
-<el-form :label-position="labelPosition" label-width="85px" :model="emailForm" :rules="rules" ref="emailForm">
+<el-form :label-position="labelPosition" label-width="85px" :model="noticeForm" :rules="rules" ref="noticeForm">
 <el-col :span="14" >
-  <el-form-item label="选区:" class="custom-bottom" prop="characters" style="min-height:170px;">
+  <el-form-item label="选区:" class="custom-bottom"  prop="checkd" style="min-height:170px;">
     <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"
     style="float:left;">全选</el-checkbox>
-    <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange"
-      style="text-align:left;">
+    <el-checkbox-group v-model="noticeForm.checkedCities" @change="handleCheckedCitiesChange"
+      style="text-align:left;" >
       <el-checkbox v-for="city in cities" :label="city"
-      style="maring-left:0;">
+      style="maring-left:0;" >
       {{city}}</el-checkbox>
     </el-checkbox-group>
     <div style="clear:both;"></div>
   </el-form-item>
   <el-form-item label="有效期限:" class="custom-bottom"  style="height:50px;" prop="date1">
     <el-date-picker
-      v-model="emailForm.date1"
+      v-model="noticeForm.date1"
       type="datetimerange"
       placeholder="选择时间范围"
       style="width:100%;">
@@ -22,14 +22,14 @@
 
   </el-form-item>
   <el-form-item label="间隔时间:"  class="custom-bottom" prop="space" style="height:50px;text-align:left;">
-    <el-input  v-model.number="emailForm.space" placeholder="请设置消息发送间隔" style="width:50%;"></el-input><span>单位:秒</span>
+    <el-input  v-model.number="noticeForm.space" placeholder="请设置消息发送间隔" style="width:50%;"></el-input><span>单位:秒</span>
   </el-form-item>
   <el-form-item label="内容:"   class="custom-bottom" prop="content">
-    <el-input  type="textarea" resize="none" v-model="emailForm.content" ></el-input>
+    <el-input  type="textarea" resize="none" v-model="noticeForm.content" ></el-input>
   </el-form-item>
 
   <el-form-item class="custom-buttonGroup1">
-    <el-button  @click="sendEmail('emailForm')" size="small">发送</el-button>
+    <el-button  @click="sendNotice('noticeForm')" size="small">发送</el-button>
   </el-form-item>
   </el-col>
 </el-form>
@@ -45,9 +45,30 @@
 <script>
 import EDialog from './EmailDialog.vue'
 import { mapState } from 'vuex'
-const cityOptions = ['上海','北京','广州','深圳']
-
+var cityOptions = [];
+var arrObj = [];
   export default {
+    beforeCreate(){
+      this.$http.get("/operate/getZone").then(response => {
+            console.log(response)
+            var arr = [];
+            for(let i = 0;i< response.data.zoneList.length;i++){
+               arr.push(response.data.zoneList[i].zone);
+               arrObj.push(response.data.zoneList[i]);
+            }
+           cityOptions = arr;
+           this.cities = cityOptions;
+           console.log(cityOptions)
+            // cityOptions = response.data;
+            // this.$store.commit('SET_USER',response.data)
+            // this.$store.commit('SET_RESPONSE',response.data)
+            // this.$store.commit('OPEN_DIALOG1');
+      }, response =>{
+          // this.$store.commit('OPEN_DIALOG1');
+          // this.$store.commit('SET_RESPONSE',response.data?response.data:'提交失败');
+          console.log(response)
+      })
+    },
     name: 'app',
     computed:{
        ...mapState({
@@ -55,98 +76,43 @@ const cityOptions = ['上海','北京','广州','深圳']
        })
     },
     data(){
-      var checkCharFomat = (rule,value,callback) =>{
-         if(value === ''){
-            callback(new Error('请输入收件人'));
-         } else if(value.length > 0 ){
-            for(let j=0;j<value.length;j++){
-                 console.log(value.charCodeAt(j))
-                if(value.charCodeAt(j) > 65248 || value.charCodeAt(j)==12288){
-                    callback(new Error('有全角字符格式不正确,请输入半角字符'))
-                    return;
-                }
-            }
-            var strArr = value.split(',');
-            var bl = true;
-            for(let i=0;i<strArr.length;i++){
-               if(strArr[i].trim() == ''){
-                  bl = false;
-               }
-            }
-            if(!bl){
-              callback(new Error('请输入正确的格式,以逗号分割用户'));
-            }
-         }
-         callback();
-      };
       var validateCheck = (rule,value,callback) =>{
         if (value[0] === null || value[1] === null) {
+          console.log(typeof value)
           callback(new Error('请输入正确的时间范围'));
         } else {
-        
+        console.log(typeof value)
           callback();
         }
       };
-      var checkItemFomat = (rule,value,callback) =>{
-         if(value === ''){
-            callback(new Error('请输入要赠送的物品'));
-         } else if(value.length > 0){
-          for(let j=0;j<value.length;j++){
-               console.log(value.charCodeAt(j))
-              if(value.charCodeAt(j) > 65248 || value.charCodeAt(j)==12288){
-                  callback(new Error('有全角字符格式不正确,请输入半角字符'))
-                  return;
-              }
-          }
-            var sArr = value.split(",");
-            var b = true;
-            for(let i=0;i<sArr.length;i++){
-               if(sArr[i].trim() == ''){
-                  b = false;
-               }else {
-                   if(sArr[i].trim().indexOf('-') < 0){
-                       b = false;
-                   }
-               }
-            }
-            if(!b){
-                callback(new Error('请输入正确的格式:物品id加"-"物品数量,不同物品以逗号间隔'));
-            }
-         }
-         callback();
+      var validChecklist = (rule,value,callback) =>{
+        if(this.noticeForm.checkedCities.length <= 0){
+          callback(new Error('至少选择一个区'));
+        }else{
+          callback();
+        }
       };
       return{
           checkAll:true,
-          checkedCities: ['上海', '北京'],
-          cities: cityOptions,
+          cities: [],
           isIndeterminate: true,
-          emailForm:{
-            characters:'',
-            g_cash:'',
-            m_cash:'',
-            title:'',
+          noticeForm:{
+            checkedCities: ['pkm'],
             content:'',
-            items:'',
             date1:'',
-            date2:'',
             space:''
           },
           rules:{
-            title:{
-               required:true, message:'请输入标题', trigger:'change'
-            },
             content:[
-              { required:true,message:'请输入邮件内容',trigger:'change' }
+              { required:true,message:'请输入邮件内容',trigger:'blur' }
             ],
             date1:[
-              { validator: validateCheck, trigger: 'change'  }
+              { validator: validateCheck, trigger: 'change'  },
+              { required:true,message:'不能为空'}
             ],
-            characters:{
-               validator:checkCharFomat, trigger:'blur'
-            },
-            items:{
-               validator:checkItemFomat, trigger:'blur'
-            },
+            checkd:[
+              { validator:validChecklist, trigger: 'change' }
+            ], 
             space:[
               { required:true,message:'不能为空'},
               { type:'number',message:'时间间隔必须是数字'}
@@ -173,20 +139,33 @@ const cityOptions = ['上海','北京','广州','深圳']
          console.log(ev)
       },
       // 对话框控制方法
-      sendEmail:function(formName){
+      sendNotice:function(formName){
          console.log(this.$refs[formName])
-         console.log(this.emailForm)
+         console.log(this.noticeForm)
+         var start = this.noticeForm.date1[0];
+         var end = this.noticeForm.date1[1];
+         console.log(start);
+         var zoneIdarr = [];
+         var zonelist = this.noticeForm.checkedCities;
+         for(let i = 0;i<arrObj.length;i++){
+            for(let j = 0;j<zonelist.length;j++){
+              if(arrObj[i].zone == zonelist[j]){
+                zoneIdarr.push(arrObj[i].id);
+              }
+            }
+         }
+         console.log(zoneIdarr)
          this.$refs[formName].validate((valid) => {
             if(valid) {
-                  this.$http.get("/pkmOperate/operate/sendMail",   {
-                       params:{
-                       characters:this.emailForm.characters,
-                       g_cash:this.emailForm.g_cash,
-                       m_cash:this.emailForm.m_cash,
-                       title:this.emailForm.title,
-                       content:this.emailForm.content,
-                       items:this.emailForm.items
-                       }
+                  this.$http.get("/operate/sendNotice",   {
+                    params:{
+                      zonelist:zonelist.join(","),
+                      zoneIds:zoneIdarr.join(","),
+                      content:this.noticeForm.content,
+                      startTime:start,
+                      endTime:end,
+                      elapse:this.noticeForm.space
+                    }
                   }).then(response => {
                         console.log(response)
 
@@ -206,7 +185,7 @@ const cityOptions = ['上海','北京','广州','深圳']
          })
       },
       handleCheckAllChange(event) {
-        this.checkedCities = event.target.checked ? cityOptions : [];
+        this.noticeForm.checkedCities = event.target.checked ? cityOptions : [];
         this.isIndeterminate = false;
       },
       handleCheckedCitiesChange(value) {

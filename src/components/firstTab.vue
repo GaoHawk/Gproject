@@ -4,11 +4,11 @@
 
   <userComponent></userComponent>
   </el-tab-pane>
-  <el-tab-pane label="角色管理" name="second">
+  <!--<el-tab-pane label="角色管理" name="second">
   <character></character>
-  </el-tab-pane>
-  <el-tab-pane label="精灵装备" name="third">
-    精灵装备
+  </el-tab-pane>-->
+  <!--<el-tab-pane label="精灵装备" name="third">-->
+    <!--精灵装备-->
 <!--     <div class="custom-select">
         <el-select v-model="value"  size="mini" @change="selectChange">
           <el-option
@@ -20,14 +20,14 @@
         </el-select>
     </div>
     <TTable></TTable> -->
-  </el-tab-pane>
-  <el-tab-pane label="材料道具" name="fourth">
-  材料道具
+  <!--</el-tab-pane>-->
+  <!--<el-tab-pane label="材料道具" name="fourth">-->
+  <!--材料道具-->
 <!--      <div class="custom-style">
        <el-button size="small">赠送武将</el-button>
      </div>
      <TTable></TTable> -->
-  </el-tab-pane>
+  <!--</el-tab-pane>-->
 </el-tabs>
 
 </template>

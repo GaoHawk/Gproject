@@ -56,15 +56,6 @@
               <el-menu-item index="2-2"></el-menu-item>
 
           </el-submenu>
-          <el-menu-item index="3"><i class="el-icon-setting"></i>导航三</el-menu-item>
-          <el-submenu index="4">
-            <template slot="title"><i class="el-icon-message"></i>导航四</template>
-
-              <!-- <template slot="title">分组一</template> -->
-              <el-menu-item index="4-1">选项1</el-menu-item>
-              <el-menu-item index="4-2">选项2</el-menu-item>
-
-          </el-submenu>
         </el-menu>
       </el-col>
       <el-col :span="20">
