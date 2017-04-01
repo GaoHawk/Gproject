@@ -49,7 +49,7 @@ var cityOptions = [];
 var arrObj = [];
   export default {
     beforeCreate(){
-      this.$http.get("/operate/getZone").then(response => {
+      this.$http.get("/pkmOperate/operate/getZone").then(response => {
             console.log(response)
             var arr = [];
             for(let i = 0;i< response.data.zoneList.length;i++){
@@ -157,7 +157,7 @@ var arrObj = [];
          console.log(zoneIdarr)
          this.$refs[formName].validate((valid) => {
             if(valid) {
-                  this.$http.get("/operate/sendNotice",   {
+                  this.$http.get("/pkmOperate/operate/sendNotice",   {
                     params:{
                       zonelist:zonelist.join(","),
                       zoneIds:zoneIdarr.join(","),

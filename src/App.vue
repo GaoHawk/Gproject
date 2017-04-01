@@ -128,7 +128,7 @@ export default {
     handleIconClick2(ev){
       console.log(this.radio)
       console.log(this.input2)
-      this.$http.get("/character/findCharacters",   {
+      this.$http.get("/pkmOperate/character/findCharacters",   {
         params: {
               keyType: this.radio-1,
               keyValue:this.input2
@@ -146,7 +146,7 @@ export default {
     getUserData(index,row){
        console.log(index,row)
        this.$store.commit('SET_UID',row.cId);
-       this.$http.get("/character/getUserInfo",   {
+       this.$http.get("/pkmOperate/character/getUserInfo",   {
          params: {
                id: row.cId
              }

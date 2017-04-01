@@ -145,7 +145,7 @@ import { mapState } from 'vuex'
          console.log(this.emailForm)
          this.$refs[formName].validate((valid) => {
             if(valid) {
-                  this.$http.get("/operate/sendMail",   {
+                  this.$http.get("/pkmOperate/operate/sendMail",   {
                        params:{
                        characters:this.emailForm.characters,
                        g_cash:this.emailForm.g_cash,
